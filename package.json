@@ -1,0 +1,52 @@
+{
+  "name": "remix-blog",
+  "type": "module",
+  "private": true,
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "sideEffects": false,
+  "scripts": {
+    "build": "remix build",
+    "dev": "remix dev --manual",
+    "lint": "eslint .",
+    "prepare": "simple-git-hooks",
+    "prettier": "prettier --write .",
+    "start": "remix-serve ./build/index.js",
+    "typecheck": "tsc",
+    "up": "taze latest -I"
+  },
+  "dependencies": {
+    "@remix-run/css-bundle": "^2.6.0",
+    "@remix-run/node": "^2.6.0",
+    "@remix-run/react": "^2.6.0",
+    "@remix-run/serve": "^2.6.0",
+    "isbot": "^4.1.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
+  },
+  "devDependencies": {
+    "@ayingott/eslint-config": "^0.7.8",
+    "@ayingott/prettier-config": "^0.1.5",
+    "@remix-run/dev": "^2.6.0",
+    "@types/react": "^18.2.20",
+    "@types/react-dom": "^18.2.18",
+    "@typescript-eslint/eslint-plugin": "^6.7.4",
+    "eslint": "^8.56.0",
+    "lint-staged": "^15.2.1",
+    "prettier": "^3.2.4",
+    "simple-git-hooks": "^2.9.0",
+    "taze": "^0.13.2",
+    "typescript": "^5.1.6"
+  },
+  "simple-git-hooks": {
+    "pre-commit": "pnpm exec lint-staged"
+  },
+  "lint-staged": {
+    "*": [
+      "eslint --fix",
+      "prettier --write --ignore-unknown"
+    ]
+  },
+  "prettier": "@ayingott/prettier-config"
+}

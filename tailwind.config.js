@@ -1,6 +1,7 @@
 // @ts-check
 
 import { nextui } from "@nextui-org/react"
+import TailwindTypography from "@tailwindcss/typography"
 
 /** @type {import('tailwindcss').Config} */
 export default {
@@ -14,5 +15,5 @@ export default {
     extend: {},
   },
   darkMode: "class",
-  plugins: [nextui()],
+  plugins: [nextui(), TailwindTypography()],
 }

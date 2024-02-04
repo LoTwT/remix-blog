@@ -5,7 +5,12 @@ import {
   json,
   redirect,
 } from "@remix-run/node"
-import { Form, useLoaderData, useNavigation } from "@remix-run/react"
+import {
+  Form,
+  useFetcher,
+  useLoaderData,
+  useNavigation,
+} from "@remix-run/react"
 import { prisma } from "~/prisma.server"
 
 export const loader = async (c: LoaderFunctionArgs) => {
@@ -51,6 +56,13 @@ export default function Page() {
   const loaderData = useLoaderData<typeof loader>()
   const navigation = useNavigation()
 
+  const deleteFetcher = useFetcher()
+
+  const isDeleteing = deleteFetcher.state === "submitting"
+  const isEditing =
+    navigation.state === "submitting" &&
+    navigation.formData?.get("action") === "edit"
+
   return (
     <div className="p-12">
       <Form method="POST">
@@ -67,15 +79,36 @@ export default function Page() {
             minRows={10}
             defaultValue={loaderData.post.content}
           />
-          <Button
-            type="submit"
-            color="primary"
-            isLoading={navigation.state === "submitting"}
-          >
+          <Button type="submit" color="primary" isLoading={isEditing}>
             更新
           </Button>
         </div>
       </Form>
+      <div>
+        <deleteFetcher.Form
+          method="POST"
+          action={`/posts/${loaderData.post.id}/delete`}
+        >
+          <Button
+            name="action"
+            value="delete"
+            isLoading={isDeleteing}
+            // type="submit"
+            color="danger"
+            onClick={(_) => {
+              // eslint-disable-next-line no-alert
+              if (confirm("确定删除吗？")) {
+                deleteFetcher.submit(null, {
+                  method: "POST",
+                  action: `/posts/${loaderData.post.id}/delete`,
+                })
+              }
+            }}
+          >
+            删除
+          </Button>
+        </deleteFetcher.Form>
+      </div>
     </div>
   )
 }

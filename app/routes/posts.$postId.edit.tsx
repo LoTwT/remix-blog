@@ -12,8 +12,14 @@ import {
   useNavigation,
 } from "@remix-run/react"
 import { prisma } from "~/prisma.server"
+import { auth } from "~/session.server"
 
 export const loader = async (c: LoaderFunctionArgs) => {
+  const user = await auth(c.request)
+  if (!user.username) {
+    return redirect("/signin")
+  }
+
   const postId = c.params.postId as string
   const post = await prisma.post.findUnique({
     where: {
